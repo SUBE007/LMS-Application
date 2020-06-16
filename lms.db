@@ -1,0 +1,638 @@
+-- MySQL dump 10.13  Distrib 5.6.48, for Win64 (x86_64)
+--
+-- Host: localhost    Database: lms_application
+-- ------------------------------------------------------
+-- Server version	5.6.48-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `app_parameter`
+--
+
+DROP TABLE IF EXISTS `app_parameter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_parameter` (
+  `app_id` int(11) NOT NULL,
+  `key_type` varchar(20) NOT NULL,
+  `key_value` int(11) NOT NULL,
+  `key_text` varchar(10) DEFAULT NULL,
+  `cur_status` varchar(10) NOT NULL,
+  `lastupd_user` varchar(10) DEFAULT NULL,
+  `lastupd_stamp` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`app_id`),
+  UNIQUE KEY `key_type_UNIQUE` (`key_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_parameter`
+--
+
+LOCK TABLES `app_parameter` WRITE;
+/*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
+INSERT INTO `app_parameter` VALUES (1,'simple',11,'Arial','fine','Monday','Monday','simple','Sube'),(2,'medium',22,'Roboto','fine','Tuesday','Friday','hard','Dube'),(3,'hard',33,'Verdana','fine','Wedensdy','Saturday','hard','Mube'),(4,'tough',44,'Merdana','fine','Thursday','Thursday','medium','Kube'),(5,'melody',55,'Lobster','fine','Friday','Sunday','medium','Lube');
+/*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidate_bank_details`
+--
+
+DROP TABLE IF EXISTS `candidate_bank_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `candidate_bank_details` (
+  `cbd_id` int(11) NOT NULL,
+  `candidate_id` int(3) DEFAULT NULL,
+  `account_no` int(20) NOT NULL,
+  `is_accountno_verified` int(11) NOT NULL,
+  `ifsc_code` varchar(20) NOT NULL,
+  `is_ifsc_verified` binary(7) NOT NULL,
+  `pan_number` varchar(20) NOT NULL,
+  `is_pan_number_verified` varchar(45) NOT NULL,
+  `adhaar_num` varchar(20) NOT NULL,
+  `is_adhaar_verified` binary(7) NOT NULL,
+  `creator_stamp` varchar(20) NOT NULL,
+  `creator_user` varchar(20) NOT NULL,
+  PRIMARY KEY (`cbd_id`),
+  UNIQUE KEY `account_no_UNIQUE` (`account_no`),
+  UNIQUE KEY `ifsc_code_UNIQUE` (`ifsc_code`),
+  UNIQUE KEY `pan_number_UNIQUE` (`pan_number`),
+  UNIQUE KEY `adhaar_num_UNIQUE` (`adhaar_num`),
+  UNIQUE KEY `creator_user_UNIQUE` (`creator_user`),
+  KEY `candidate_id_idx` (`candidate_id`),
+  CONSTRAINT `candidate_id` FOREIGN KEY (`candidate_id`) REFERENCES `candidate_persional_details_check` (`candidate_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidate_bank_details`
+--
+
+LOCK TABLES `candidate_bank_details` WRITE;
+/*!40000 ALTER TABLE `candidate_bank_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `candidate_bank_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidate_documents`
+--
+
+DROP TABLE IF EXISTS `candidate_documents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `candidate_documents` (
+  `cd_id` int(3) NOT NULL,
+  `candidate_id` int(3) NOT NULL,
+  `doc_type` varchar(10) NOT NULL,
+  `doc_pathstatus` varchar(45) NOT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  PRIMARY KEY (`cd_id`),
+  KEY `candidate_id` (`candidate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidate_documents`
+--
+
+LOCK TABLES `candidate_documents` WRITE;
+/*!40000 ALTER TABLE `candidate_documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `candidate_documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidate_education_detail_check`
+--
+
+DROP TABLE IF EXISTS `candidate_education_detail_check`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `candidate_education_detail_check` (
+  `cedc_id` int(3) NOT NULL,
+  `candidate_id` int(3) DEFAULT NULL,
+  `field_name` varchar(20) NOT NULL,
+  `is_verified` binary(2) NOT NULL,
+  `lastupd_stamp` varchar(10) NOT NULL,
+  `lastupd_user` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`cedc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidate_education_detail_check`
+--
+
+LOCK TABLES `candidate_education_detail_check` WRITE;
+/*!40000 ALTER TABLE `candidate_education_detail_check` DISABLE KEYS */;
+/*!40000 ALTER TABLE `candidate_education_detail_check` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidate_persional_details_check`
+--
+
+DROP TABLE IF EXISTS `candidate_persional_details_check`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `candidate_persional_details_check` (
+  `candidate_id` int(3) NOT NULL DEFAULT '0',
+  `field_name` varchar(20) NOT NULL,
+  `is_verified` varchar(4) NOT NULL,
+  `lastupd_stamp` varchar(10) DEFAULT NULL,
+  `lastupd_user` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) NOT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  `cpdc_id` int(3) NOT NULL,
+  PRIMARY KEY (`candidate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidate_persional_details_check`
+--
+
+LOCK TABLES `candidate_persional_details_check` WRITE;
+/*!40000 ALTER TABLE `candidate_persional_details_check` DISABLE KEYS */;
+/*!40000 ALTER TABLE `candidate_persional_details_check` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidate_qualification`
+--
+
+DROP TABLE IF EXISTS `candidate_qualification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `candidate_qualification` (
+  `CQ_id` int(3) NOT NULL,
+  `candidate_id` int(3) NOT NULL,
+  `diploma` varchar(30) NOT NULL,
+  `degree_name` varchar(20) DEFAULT NULL,
+  `is_degree_name_verified` binary(7) NOT NULL,
+  `employee_decipline` varchar(15) NOT NULL,
+  `is_employee_decipline_verified` binary(7) NOT NULL,
+  `passing_year` date NOT NULL,
+  `is_passing_year_verified` binary(7) NOT NULL,
+  `aggr_percentage` int(2) NOT NULL,
+  `is_aggr_percentage_verified` binary(1) NOT NULL,
+  `final_year_per` int(2) NOT NULL,
+  `is_final_year_per_verified` binary(1) NOT NULL,
+  `training_institute` varchar(45) NOT NULL,
+  `is_training_institute_verified` binary(1) DEFAULT NULL,
+  `training_duration_month` varchar(10) NOT NULL,
+  `is_training_duration_month_verified` binary(1) NOT NULL,
+  `other_training` varchar(45) NOT NULL,
+  `is_other_training_verified` binary(1) NOT NULL,
+  `creator_stamp` varchar(20) NOT NULL,
+  `creator_user` varchar(20) NOT NULL,
+  PRIMARY KEY (`CQ_id`),
+  KEY `candidate_id` (`candidate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidate_qualification`
+--
+
+LOCK TABLES `candidate_qualification` WRITE;
+/*!40000 ALTER TABLE `candidate_qualification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `candidate_qualification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company`
+--
+
+DROP TABLE IF EXISTS `company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `company` (
+  `company_id` int(11) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `location` varchar(20) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) NOT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  PRIMARY KEY (`company_id`),
+  UNIQUE KEY `address_UNIQUE` (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company`
+--
+
+LOCK TABLES `company` WRITE;
+/*!40000 ALTER TABLE `company` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fellowship_candidate`
+--
+
+DROP TABLE IF EXISTS `fellowship_candidate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fellowship_candidate` (
+  `fellowship_id` int(3) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `middle_name` varchar(10) DEFAULT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
+  `email_id` varchar(20) DEFAULT NULL,
+  `hired_city` varchar(20) DEFAULT NULL,
+  `degree` varchar(20) DEFAULT NULL,
+  `hired_date` varchar(12) NOT NULL,
+  `mobile_no` varchar(10) NOT NULL,
+  `pin_code` int(6) NOT NULL,
+  `hired_lab` varchar(20) DEFAULT NULL,
+  `attitude` varchar(10) DEFAULT NULL,
+  `communication_remark` varchar(2) NOT NULL,
+  `knowledge_remark` varchar(2) DEFAULT NULL,
+  `agger_remark` int(2) DEFAULT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(20) DEFAULT NULL,
+  `date_of_birth` varchar(12) DEFAULT NULL,
+  `is_birth_verified` varchar(3) DEFAULT NULL,
+  `parent_name` varchar(20) DEFAULT NULL,
+  `parent_occupation` varchar(20) DEFAULT NULL,
+  `pmobile_no` varchar(10) NOT NULL,
+  `parent_annual_sal` int(10) NOT NULL,
+  `local_addr` varchar(100) NOT NULL,
+  `permanent_addr` varchar(100) NOT NULL,
+  `photo_path` varchar(30) NOT NULL,
+  `joining_date` varchar(12) NOT NULL,
+  `candidate_status` varchar(10) NOT NULL,
+  `persional_information` varchar(50) DEFAULT NULL,
+  `bank_info` varchar(70) NOT NULL,
+  `educational_info` varchar(100) NOT NULL,
+  `document_status` varchar(20) DEFAULT NULL,
+  `remark` varchar(10) NOT NULL,
+  PRIMARY KEY (`fellowship_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fellowship_candidate`
+--
+
+LOCK TABLES `fellowship_candidate` WRITE;
+/*!40000 ALTER TABLE `fellowship_candidate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `fellowship_candidate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hired_candidate`
+--
+
+DROP TABLE IF EXISTS `hired_candidate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hired_candidate` (
+  `id` int(3) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `middle_name` varchar(20) DEFAULT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
+  `email_id` varchar(20) NOT NULL,
+  `hired_city` varchar(20) NOT NULL,
+  `degree` varchar(20) DEFAULT NULL,
+  `hire_date` varchar(10) NOT NULL,
+  `mobile_no` int(10) NOT NULL,
+  `pin_code` int(10) NOT NULL,
+  `hired_lab` varchar(20) NOT NULL,
+  `attitude` varchar(20) DEFAULT NULL,
+  `communication_remark` varchar(2) DEFAULT NULL,
+  `knowledge_remark` varchar(2) DEFAULT NULL,
+  `agger_percentage` int(2) DEFAULT NULL,
+  `satatus` varchar(7) NOT NULL,
+  `creator_stamp` varchar(10) NOT NULL,
+  `creator_user` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hired_candidate`
+--
+
+LOCK TABLES `hired_candidate` WRITE;
+/*!40000 ALTER TABLE `hired_candidate` DISABLE KEYS */;
+INSERT INTO `hired_candidate` VALUES (1,'Ram','kumar','yadav','ram001@gmail.com','Ayodhya','B.tech','01-01-2019',1234567890,101010,'Pune','help','AA','AA',90,'present','creates1','createu1'),(2,'Shyam','sundar','yadav','shyam002@gmail.com','MAthura','MBA','02-02-2019',1234567892,202020,'Pune','help','AA','AA',89,'present','creates2','createu2'),(3,'Sita','kumari','puri','sita003@gmail.com','Mithila','Engg','03-03-2019',1234567893,303030,'Mumbai','help','AA','AA',90,'present','creates3','createu3'),(4,'Krishna','S','yadav','Krishna004@gmail.com','Gokul','Politics','04-04-2019',1234567894,404040,'Bengal','help','AA','AA',91,'present','creates4','createu4');
+/*!40000 ALTER TABLE `hired_candidate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lab`
+--
+
+DROP TABLE IF EXISTS `lab`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab` (
+  `lab_id` int(11) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `location` varchar(20) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`lab_id`),
+  UNIQUE KEY `address_UNIQUE` (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lab`
+--
+
+LOCK TABLES `lab` WRITE;
+/*!40000 ALTER TABLE `lab` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lab` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lab_threshold`
+--
+
+DROP TABLE IF EXISTS `lab_threshold`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab_threshold` (
+  `lab_threshold_id` int(11) NOT NULL,
+  `lab_id` int(11) NOT NULL,
+  `lab_capacity` int(11) NOT NULL,
+  `lead_threshold` varchar(10) NOT NULL,
+  `ideation_engg_threshold` varchar(10) NOT NULL,
+  `buddy_engg_threshold` varchar(10) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) NOT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  PRIMARY KEY (`lab_threshold_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lab_threshold`
+--
+
+LOCK TABLES `lab_threshold` WRITE;
+/*!40000 ALTER TABLE `lab_threshold` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lab_threshold` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `maker_program`
+--
+
+DROP TABLE IF EXISTS `maker_program`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `maker_program` (
+  `maker_id` int(11) NOT NULL,
+  `program_name` varchar(20) DEFAULT NULL,
+  `program_type` varchar(20) DEFAULT NULL,
+  `program_link` varchar(20) DEFAULT NULL,
+  `tech_stack_id` int(11) DEFAULT NULL,
+  `tech_type_id` int(11) DEFAULT NULL,
+  `is_program_approved` varchar(3) DEFAULT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `status` varchar(3) DEFAULT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`maker_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `maker_program`
+--
+
+LOCK TABLES `maker_program` WRITE;
+/*!40000 ALTER TABLE `maker_program` DISABLE KEYS */;
+/*!40000 ALTER TABLE `maker_program` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mentor`
+--
+
+DROP TABLE IF EXISTS `mentor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mentor` (
+  `mentor_id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `mentor_type` varchar(20) NOT NULL,
+  `lab_id` int(11) NOT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `creator_stamp` varchar(10) NOT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  PRIMARY KEY (`mentor_id`),
+  UNIQUE KEY `lab_id_UNIQUE` (`lab_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mentor`
+--
+
+LOCK TABLES `mentor` WRITE;
+/*!40000 ALTER TABLE `mentor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mentor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mentor_ideation_map`
+--
+
+DROP TABLE IF EXISTS `mentor_ideation_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mentor_ideation_map` (
+  `mentor_ideation_id` int(11) NOT NULL,
+  `mentor_id` int(11) NOT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `creator_stamp` varchar(45) NOT NULL,
+  `creator_user` varchar(45) NOT NULL,
+  PRIMARY KEY (`mentor_ideation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mentor_ideation_map`
+--
+
+LOCK TABLES `mentor_ideation_map` WRITE;
+/*!40000 ALTER TABLE `mentor_ideation_map` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mentor_ideation_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mentor_technical_stack`
+--
+
+DROP TABLE IF EXISTS `mentor_technical_stack`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mentor_technical_stack` (
+  `id` int(11) NOT NULL,
+  `mentor_id` int(11) NOT NULL,
+  `tech_stack_id` int(11) NOT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  `datetime` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mentor_technical_stack`
+--
+
+LOCK TABLES `mentor_technical_stack` WRITE;
+/*!40000 ALTER TABLE `mentor_technical_stack` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mentor_technical_stack` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tech_stack`
+--
+
+DROP TABLE IF EXISTS `tech_stack`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tech_stack` (
+  `tech_id` int(11) NOT NULL,
+  `tech_name` varchar(20) NOT NULL,
+  `image_path` varchar(45) NOT NULL,
+  `framwork` varchar(20) DEFAULT NULL,
+  `cur_status` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  `tech_stackcol` varchar(45) NOT NULL,
+  PRIMARY KEY (`tech_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tech_stack`
+--
+
+LOCK TABLES `tech_stack` WRITE;
+/*!40000 ALTER TABLE `tech_stack` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tech_stack` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tech_type`
+--
+
+DROP TABLE IF EXISTS `tech_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tech_type` (
+  `tech_type_id` int(11) NOT NULL,
+  `type_name` varchar(20) NOT NULL,
+  `cur_status` varchar(10) NOT NULL,
+  `creator_stamp` varchar(10) NOT NULL,
+  `creator_user` varchar(10) NOT NULL,
+  `tech_typecol` varchar(45) NOT NULL,
+  PRIMARY KEY (`tech_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tech_type`
+--
+
+LOCK TABLES `tech_type` WRITE;
+/*!40000 ALTER TABLE `tech_type` DISABLE KEYS */;
+INSERT INTO `tech_type` VALUES (1,'CEO','working','ceo stamp','chintu','help'),(2,'Manager','working','mgr stamp','chintu','support'),(3,'Hr','talking','hr stamp','chintu','support'),(4,'Mentor','enjoing','stamp','chintu','tect help'),(5,'Watch Man','sleeping','no stamp','chintu','security');
+/*!40000 ALTER TABLE `tech_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_details`
+--
+
+DROP TABLE IF EXISTS `user_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_details` (
+  `user_details_id` int(11) NOT NULL,
+  `email` varchar(25) NOT NULL,
+  `first_name` varchar(15) NOT NULL,
+  `last_name` varchar(15) DEFAULT NULL,
+  `password` varchar(20) NOT NULL,
+  `contact_number` varchar(10) NOT NULL,
+  `verified` varchar(3) NOT NULL,
+  PRIMARY KEY (`user_details_id`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `password_UNIQUE` (`password`),
+  UNIQUE KEY `contact_number_UNIQUE` (`contact_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_details`
+--
+
+LOCK TABLES `user_details` WRITE;
+/*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
+INSERT INTO `user_details` VALUES (1,'chandu@gmail.com','Chandler','Bing','chandu1','10001','1'),(2,'rachel@gmail.com','Rachel','Green','rachel2','20002','1'),(3,'joye@gmail.com','Joey ','Tribiani','joey3','30003','1'),(4,'monica@gmail.com','Monica','Geller','monica4','40004','1'),(5,'phebi@gmail.com','Phoebe','Buffay','phebi5','50005','1'),(6,'ross@gmail.com','Ross','Geller','Ross6','60006','1');
+/*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_roles`
+--
+
+DROP TABLE IF EXISTS `user_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_roles` (
+  `user_id` int(11) NOT NULL,
+  `roll_name` varchar(15) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+LOCK TABLES `user_roles` WRITE;
+/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
+INSERT INTO `user_roles` VALUES (1,'Dada'),(2,'Bhai'),(3,'Villain'),(4,'Hero'),(5,'Joker');
+/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-06-15 20:28:50
