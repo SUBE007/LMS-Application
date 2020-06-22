@@ -1,0 +1,35 @@
+select app_id 
+
+from app_parameter
+ 
+where key_type='simple' and key_value=(select key_value
+  from app_parameter
+					                where creator_user='Sube');
+
+select max(contact_number)
+from user_details
+where contact_number < (select max(contact_number)
+                                              from user_details);
+
+select count(*) 
+
+from user_details 
+
+where contact_number < (select max(contact_number)
+						         from user_details);
+
+select count(*)  
+         from user_details ud , user_roles ur;
+
+select ud.contact_number,ur.roll_name  
+         from user_details ud , user_roles ur;
+
+select ts.tech_name,tt.type_name
+from tech_type tt,tech_stack ts
+where tt.tech_type_id=ts.tech_id;
+
+select ud.email,ur.roll_name
+from user_roles ur,user_details ud;
+
+
+ 
