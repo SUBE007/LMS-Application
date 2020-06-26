@@ -33,7 +33,9 @@ CREATE TABLE `app_parameter` (
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`app_id`),
-  UNIQUE KEY `key_type_UNIQUE` (`key_type`)
+  UNIQUE KEY `key_type_UNIQUE` (`key_type`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `app_parameter_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -43,7 +45,7 @@ CREATE TABLE `app_parameter` (
 
 LOCK TABLES `app_parameter` WRITE;
 /*!40000 ALTER TABLE `app_parameter` DISABLE KEYS */;
-INSERT INTO `app_parameter` VALUES (1,'simple',11,'Arial','fine','Monday','Monday','simple','Sube'),(2,'medium',22,'Roboto','fine','Tuesday','Friday','hard','Dube'),(3,'hard',33,'Verdana','fine','Wedensdy','Saturday','hard','Mube'),(4,'tough',44,'Merdana','fine','Thursday','Thursday','medium','Kube'),(5,'melody',55,'Lobster','fine','Friday','Sunday','medium','Lube');
+INSERT INTO `app_parameter` VALUES (1,'simple',11,'Arial','fine','Monday','Monday','simple','Ram'),(2,'medium',22,'Roboto','fine','Tuesday','Friday','hard','Krishna'),(3,'hard',33,'Verdana','fine','Wedensdy','Saturday','hard','Sita'),(4,'tough',44,'Merdana','fine','Thursday','Thursday','medium','Laxman'),(5,'melody',55,'Lobster','fine','Friday','Sunday','medium','Radha');
 /*!40000 ALTER TABLE `app_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,13 +62,13 @@ CREATE TABLE `candidate_bank_details` (
   `account_no` int(20) NOT NULL,
   `is_accountno_verified` int(11) NOT NULL,
   `ifsc_code` varchar(20) NOT NULL,
-  `is_ifsc_verified` binary(7) NOT NULL,
   `pan_number` varchar(20) NOT NULL,
   `is_pan_number_verified` varchar(45) NOT NULL,
   `adhaar_num` varchar(20) NOT NULL,
-  `is_adhaar_verified` binary(7) NOT NULL,
   `creator_stamp` varchar(20) NOT NULL,
   `creator_user` varchar(20) NOT NULL,
+  `is_ifsc_verified` varchar(10) DEFAULT NULL,
+  `is_adhaar_verified` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`cbd_id`),
   UNIQUE KEY `account_no_UNIQUE` (`account_no`),
   UNIQUE KEY `ifsc_code_UNIQUE` (`ifsc_code`),
@@ -74,6 +76,7 @@ CREATE TABLE `candidate_bank_details` (
   UNIQUE KEY `adhaar_num_UNIQUE` (`adhaar_num`),
   UNIQUE KEY `creator_user_UNIQUE` (`creator_user`),
   KEY `candidate_id_idx` (`candidate_id`),
+  CONSTRAINT `candidate_bank_details_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`),
   CONSTRAINT `candidate_id` FOREIGN KEY (`candidate_id`) REFERENCES `candidate_persional_details_check` (`candidate_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -84,6 +87,7 @@ CREATE TABLE `candidate_bank_details` (
 
 LOCK TABLES `candidate_bank_details` WRITE;
 /*!40000 ALTER TABLE `candidate_bank_details` DISABLE KEYS */;
+INSERT INTO `candidate_bank_details` VALUES (1,2,10001,1,'RBI11','SUB111','yes','2132001','SUBE','Krishna','yes','yes'),(2,1,10002,0,'DBI22','SUB222','yes','2132002','LUBE','Ram','yes','no'),(3,4,10003,1,'UBI33','SUB333','yes','2132003','MUBE','Sita','yes','no'),(4,3,10004,1,'CBI44','SUB444','no','2132004','DUBE','Laxman','yes','yes'),(5,4,10005,0,'SBI55','SUB555','yes','2132005','SUBE','Radha','yes','yes');
 /*!40000 ALTER TABLE `candidate_bank_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +106,10 @@ CREATE TABLE `candidate_documents` (
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) NOT NULL,
   PRIMARY KEY (`cd_id`),
-  KEY `candidate_id` (`candidate_id`)
+  KEY `candidate_id` (`candidate_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `candi_id_fk` FOREIGN KEY (`candidate_id`) REFERENCES `candidate_persional_details_check` (`candidate_id`),
+  CONSTRAINT `candidate_documents_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -112,6 +119,7 @@ CREATE TABLE `candidate_documents` (
 
 LOCK TABLES `candidate_documents` WRITE;
 /*!40000 ALTER TABLE `candidate_documents` DISABLE KEYS */;
+INSERT INTO `candidate_documents` VALUES (1,2,'Adhaar','desktop/adhaar','sube','Ram'),(2,3,'PAN','desktop/PAN','dube','Sita'),(3,4,'DL','desktop/DL','mube','Laxman'),(4,1,'RashanCard','desktop/Rashan','lube','Krishna'),(5,1,'CollegeId','desktop/college','lube','Radha');
 /*!40000 ALTER TABLE `candidate_documents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +139,11 @@ CREATE TABLE `candidate_education_detail_check` (
   `lastupd_user` varchar(10) NOT NULL,
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`cedc_id`)
+  PRIMARY KEY (`cedc_id`),
+  KEY `candidate_id_fk` (`candidate_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `candidate_education_detail_check_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`),
+  CONSTRAINT `candidate_id_fk` FOREIGN KEY (`candidate_id`) REFERENCES `candidate_persional_details_check` (`candidate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -141,6 +153,7 @@ CREATE TABLE `candidate_education_detail_check` (
 
 LOCK TABLES `candidate_education_detail_check` WRITE;
 /*!40000 ALTER TABLE `candidate_education_detail_check` DISABLE KEYS */;
+INSERT INTO `candidate_education_detail_check` VALUES (1,1,'education','1\0','morning','night200','sube','Ram'),(2,3,'fight','0\0','evening','mor900','dube','Sita'),(3,4,'aggricult','1\0','morning','noon1200','lube','Laxman'),(4,5,'teaching','0\0','noon','eve1120','dube','Radha'),(5,2,'tester','1\0','morning','mor1130','mube','Krishna');
 /*!40000 ALTER TABLE `candidate_education_detail_check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +173,9 @@ CREATE TABLE `candidate_persional_details_check` (
   `creator_stamp` varchar(10) NOT NULL,
   `creator_user` varchar(10) NOT NULL,
   `cpdc_id` int(3) NOT NULL,
-  PRIMARY KEY (`candidate_id`)
+  PRIMARY KEY (`candidate_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `candidate_persional_details_check_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -170,6 +185,7 @@ CREATE TABLE `candidate_persional_details_check` (
 
 LOCK TABLES `candidate_persional_details_check` WRITE;
 /*!40000 ALTER TABLE `candidate_persional_details_check` DISABLE KEYS */;
+INSERT INTO `candidate_persional_details_check` VALUES (1,'Teacher','no','evening','fransh','sube','Sita',1),(2,'Labour','yes','morning','China','dube','Ram',2),(3,'Clerk','yes','noon','Russia','mube','Laxman',3),(4,'Neta','no','morning','USA','lube','Sita',3),(5,'Police','no','noon','India','kube','Ram',5);
 /*!40000 ALTER TABLE `candidate_persional_details_check` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +219,9 @@ CREATE TABLE `candidate_qualification` (
   `creator_stamp` varchar(20) NOT NULL,
   `creator_user` varchar(20) NOT NULL,
   PRIMARY KEY (`CQ_id`),
-  KEY `candidate_id` (`candidate_id`)
+  KEY `candidate_id` (`candidate_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `candidate_qualification_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,6 +231,7 @@ CREATE TABLE `candidate_qualification` (
 
 LOCK TABLES `candidate_qualification` WRITE;
 /*!40000 ALTER TABLE `candidate_qualification` DISABLE KEYS */;
+INSERT INTO `candidate_qualification` VALUES (1,2,'yes','B.Tech','1\0\0\0\0\0\0','IT','1\0\0\0\0\0\0','2018-06-23','1\0\0\0\0\0\0',72,'1',77,'1','NareshIT','0','4','0','no','0','sube','Ram'),(2,2,'no','MCA','1\0\0\0\0\0\0','CSE','0\0\0\0\0\0\0','2018-09-10','0\0\0\0\0\0\0',76,'0',72,'1','BridgeLabz','0','2','1','yes','0','dube','Sita'),(3,3,'yes','MA','1\0\0\0\0\0\0','ECE','1\0\0\0\0\0\0','2019-06-23','1\0\0\0\0\0\0',70,'1',70,'1','Jspider','1','3','1','yes','1','mube','Ram'),(4,4,'no','MBBS','0\0\0\0\0\0\0','ME','1\0\0\0\0\0\0','2019-07-30','1\0\0\0\0\0\0',68,'1',80,'1','DurgaSoft','0','4','0','no','0','lube','Radha'),(5,1,'yes','BA','0\0\0\0\0\0\0','EE','0\0\0\0\0\0\0','2018-06-15','1\0\0\0\0\0\0',70,'1',65,'1','BridgeLabz','1','4','1','yes','0','sube','krishna');
 /*!40000 ALTER TABLE `candidate_qualification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,7 +251,9 @@ CREATE TABLE `company` (
   `creator_stamp` varchar(10) NOT NULL,
   `creator_user` varchar(10) NOT NULL,
   PRIMARY KEY (`company_id`),
-  UNIQUE KEY `address_UNIQUE` (`address`)
+  UNIQUE KEY `address_UNIQUE` (`address`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `company_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -242,7 +263,57 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
+INSERT INTO `company` VALUES (1,'Goldman Sachs','New Delhi','India','absent','sube','Ram'),(2,'CISCO','USA','USA','present','dube','Krishna'),(3,'HoneyWell','Pune','India','present','mube','Sita'),(4,'NTT Data','Hyderabad','India','absent','sube','Radha'),(5,'BridgeLabz','Bengaluru','India','present','dube','Laxman'),(6,'Samsung R&D','Chennai','India','present','sube','Sita');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company_requirement`
+--
+
+DROP TABLE IF EXISTS `company_requirement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `company_requirement` (
+  `id` int(11) NOT NULL,
+  `company_id` int(3) DEFAULT NULL,
+  `requested_month` varchar(45) DEFAULT NULL,
+  `company_requirementcol` varchar(45) DEFAULT NULL,
+  `city` varchar(15) DEFAULT NULL,
+  `is_doc_verified` int(11) DEFAULT NULL,
+  `required_docpath` varchar(45) DEFAULT NULL,
+  `no_of_engg` int(11) DEFAULT NULL,
+  `tech_stack_id` int(11) DEFAULT NULL,
+  `tech_type_id` int(11) DEFAULT NULL,
+  `maker_program_id` int(11) DEFAULT NULL,
+  `lead_id` int(11) DEFAULT NULL,
+  `ideation_engg_id` int(11) DEFAULT NULL,
+  `buddy_engg_id` int(11) DEFAULT NULL,
+  `special_remark_status` varchar(10) DEFAULT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tech_id_idx` (`tech_stack_id`),
+  KEY `tech_type_id_idx` (`tech_type_id`),
+  KEY `maker_id_idx` (`maker_program_id`),
+  KEY `company_id_fk` (`company_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `company_id_fk` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
+  CONSTRAINT `company_requirement_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`),
+  CONSTRAINT `maker_id` FOREIGN KEY (`maker_program_id`) REFERENCES `maker_program` (`maker_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tech_id` FOREIGN KEY (`tech_stack_id`) REFERENCES `mentor_tech_stack` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tech_type_id` FOREIGN KEY (`tech_type_id`) REFERENCES `tech_type` (`tech_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company_requirement`
+--
+
+LOCK TABLES `company_requirement` WRITE;
+/*!40000 ALTER TABLE `company_requirement` DISABLE KEYS */;
+INSERT INTO `company_requirement` VALUES (1,1,'JULY','FIVE','BENGALURU',1,'dirt1',20,2,1,1,4,2,2,'yes','sube','Ram'),(2,2,'AUG','TEN','SULTANPUR',0,'dirt2',50,3,2,3,1,3,3,'no','dube','Krishna'),(3,1,'SEPT','SIXONE','KANPUR',1,'dirt3',40,2,3,3,2,4,5,'yes','lube','Sita'),(4,4,'MAY','SEVENONE','KOTA',1,'dirt4',30,1,4,2,2,5,2,'no','mube','Radha'),(5,3,'JUNE','TWOONE','ALLAHABAD',1,'dirt5',20,4,5,4,1,1,1,'yes','lube','Sita');
+/*!40000 ALTER TABLE `company_requirement` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -286,7 +357,9 @@ CREATE TABLE `fellowship_candidate` (
   `educational_info` varchar(100) NOT NULL,
   `document_status` varchar(20) DEFAULT NULL,
   `remark` varchar(10) NOT NULL,
-  PRIMARY KEY (`fellowship_id`)
+  PRIMARY KEY (`fellowship_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `fellowship_candidate_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -296,6 +369,7 @@ CREATE TABLE `fellowship_candidate` (
 
 LOCK TABLES `fellowship_candidate` WRITE;
 /*!40000 ALTER TABLE `fellowship_candidate` DISABLE KEYS */;
+INSERT INTO `fellowship_candidate` VALUES (1,'sube','na','chaurasiya','sube@gmail.com','USA','B.tech','11/10/2018','10001',227304,'BLBLR','normal','AA','AA',1,'sube','Ram','11/08/2020','yes','Ram','Aggr','200001',100000,'blr2','alld','dir1','20/01/2020','yes','subesube','ubi','bTech','got','good'),(2,'dube','na','chaurasiya','dube@gmail.com','IND','B.tech','01/10/2019','10002',227306,'BLBSA','bad','AB','AA',2,'dube','Sita','11/08/2019','yes','Ram','Aggr','200001',100000,'blr3','balld','dir2','14/01/2020','yes','dubedube','cbi','btch','got','good'),(3,'mube','na','chaurasiya','lube@gmail.com','UAE','BA','05/10/2018','10003',227307,'BLHYD','simple','BB','AA',3,'mube','Ram','11/08/2018','no','Ram','Aggr','200001',100000,'blr1','paald','dir3','15/01/2020','no','lubelube','sbi','ba','notgot','good'),(4,'lube','na','chaurasiya','mube@gmail.com','SRI','MCA','20/10/2018','10004',227308,'BLPUNE','pro','BB','BB',1,'lubbe','Krishna','11/08/2017','no','Ram','Aggr','200004',100000,'blr5','naald','dir4','10/01/2020','yes','mubemube','dbi','mca','notgot','bad'),(5,'qube','na','chaurasiya','qube@gmail.com','MAXI','MCA','11/10/2019','10005',227309,'BLMH','pro','AA','AB',2,'qube','Sita','11/08/2020','yes','Ram','Aggr','200005',100000,'blr4','lald','dir5','30/01/2020','yes','qubeqube','kbi','mca','got','bad');
 /*!40000 ALTER TABLE `fellowship_candidate` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,7 +399,9 @@ CREATE TABLE `hired_candidate` (
   `satatus` varchar(7) NOT NULL,
   `creator_stamp` varchar(10) NOT NULL,
   `creator_user` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `hired_candidate_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -335,7 +411,7 @@ CREATE TABLE `hired_candidate` (
 
 LOCK TABLES `hired_candidate` WRITE;
 /*!40000 ALTER TABLE `hired_candidate` DISABLE KEYS */;
-INSERT INTO `hired_candidate` VALUES (1,'Ram','kumar','yadav','ram001@gmail.com','Ayodhya','B.tech','01-01-2019',1234567890,101010,'Pune','help','AA','AA',90,'present','creates1','createu1'),(2,'Shyam','sundar','yadav','shyam002@gmail.com','MAthura','MBA','02-02-2019',1234567892,202020,'Pune','help','AA','AA',89,'present','creates2','createu2'),(3,'Sita','kumari','puri','sita003@gmail.com','Mithila','Engg','03-03-2019',1234567893,303030,'Mumbai','help','AA','AA',90,'present','creates3','createu3'),(4,'Krishna','S','yadav','Krishna004@gmail.com','Gokul','Politics','04-04-2019',1234567894,404040,'Bengal','help','AA','AA',91,'present','creates4','createu4');
+INSERT INTO `hired_candidate` VALUES (1,'Ram','kumar','yadav','ram001@gmail.com','Ayodhya','B.tech','01-01-2019',1234567890,101010,'Pune','help','AA','AA',90,'present','creates1','Ram'),(2,'Shyam','sundar','yadav','shyam002@gmail.com','MAthura','MBA','02-02-2019',1234567892,202020,'Pune','help','AA','AA',89,'present','creates2','Sita'),(3,'Sita','kumari','puri','sita003@gmail.com','Mithila','Engg','03-03-2019',1234567893,303030,'Mumbai','help','AA','AA',90,'present','creates3','Krishna'),(4,'Krishna','S','yadav','Krishna004@gmail.com','Gokul','Politics','04-04-2019',1234567894,404040,'Bengal','help','AA','AA',91,'present','creates4','Radha');
 /*!40000 ALTER TABLE `hired_candidate` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -355,7 +431,9 @@ CREATE TABLE `lab` (
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`lab_id`),
-  UNIQUE KEY `address_UNIQUE` (`address`)
+  UNIQUE KEY `address_UNIQUE` (`address`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `lab_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -365,6 +443,7 @@ CREATE TABLE `lab` (
 
 LOCK TABLES `lab` WRITE;
 /*!40000 ALTER TABLE `lab` DISABLE KEYS */;
+INSERT INTO `lab` VALUES (1,'BridgeLab','Bengaluru','BLR/76','ok','kube','Ram'),(2,'SapLab','Kolkata','KOL/66','notok','mube','Krishna'),(3,'NASALab','USA','USA/70','ok','lube','Sita'),(4,'IsroLab','Bengaluru','BLR/56','ok','dube','Radha'),(5,'RMD Lab','Bengaluru','BLR/74','notok','sube','Sita');
 /*!40000 ALTER TABLE `lab` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,7 +464,11 @@ CREATE TABLE `lab_threshold` (
   `status` varchar(10) NOT NULL,
   `creator_stamp` varchar(10) NOT NULL,
   `creator_user` varchar(10) NOT NULL,
-  PRIMARY KEY (`lab_threshold_id`)
+  PRIMARY KEY (`lab_threshold_id`),
+  KEY `lab_id_fk` (`lab_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `lab_id_fk` FOREIGN KEY (`lab_id`) REFERENCES `lab` (`lab_id`),
+  CONSTRAINT `lab_threshold_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -395,6 +478,7 @@ CREATE TABLE `lab_threshold` (
 
 LOCK TABLES `lab_threshold` WRITE;
 /*!40000 ALTER TABLE `lab_threshold` DISABLE KEYS */;
+INSERT INTO `lab_threshold` VALUES (1,1,100,'lead1','max10','buddy1','yes','dube','Ram'),(2,2,200,'lead2','min4','buddy2','no','lube','Laxman'),(3,4,50,'lead3','max12','buddy3','no','mube','Krishna'),(4,3,40,'lead4','max8','buddy4','yes','lube','Sita'),(5,2,150,'lead5','min3','buddy5','yes','dube','Radha');
 /*!40000 ALTER TABLE `lab_threshold` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,7 +501,9 @@ CREATE TABLE `maker_program` (
   `status` varchar(3) DEFAULT NULL,
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`maker_id`)
+  PRIMARY KEY (`maker_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `maker_program_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -427,6 +513,7 @@ CREATE TABLE `maker_program` (
 
 LOCK TABLES `maker_program` WRITE;
 /*!40000 ALTER TABLE `maker_program` DISABLE KEYS */;
+INSERT INTO `maker_program` VALUES (1,'java','full_stack','fullstacko.com',1,2,'yes','mamma','yes','lube','Krishna'),(2,'python','backend','backendu.com',2,3,'no','dada','no','mube','Ram'),(3,'java','frontend','frontenducom.',3,3,'yes','babu','no','dube','Radha'),(4,'php','fullstack','fullstack.com',3,4,'no','nodesc','yes','sube','Sita');
 /*!40000 ALTER TABLE `maker_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,7 +533,9 @@ CREATE TABLE `mentor` (
   `creator_stamp` varchar(10) NOT NULL,
   `creator_user` varchar(10) NOT NULL,
   PRIMARY KEY (`mentor_id`),
-  UNIQUE KEY `lab_id_UNIQUE` (`lab_id`)
+  UNIQUE KEY `lab_id_UNIQUE` (`lab_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `mentor_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -456,6 +545,7 @@ CREATE TABLE `mentor` (
 
 LOCK TABLES `mentor` WRITE;
 /*!40000 ALTER TABLE `mentor` DISABLE KEYS */;
+INSERT INTO `mentor` VALUES (1,'Vidya','fullstack',101,'yes','qube ','Ram'),(2,'Kalpesh','fullStack',102,'yes','hube','Ram'),(3,'Venkat','fullStack',103,'yes','lube','Laxman'),(4,'Ishwarya','fronend',104,'yes','dube','Krishna'),(5,'Pooja','Java',105,'yes','dube','Sita'),(6,'Versha','HR',106,'yes','mube','Radha');
 /*!40000 ALTER TABLE `mentor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -472,7 +562,11 @@ CREATE TABLE `mentor_ideation_map` (
   `status` varchar(10) DEFAULT NULL,
   `creator_stamp` varchar(45) NOT NULL,
   `creator_user` varchar(45) NOT NULL,
-  PRIMARY KEY (`mentor_ideation_id`)
+  PRIMARY KEY (`mentor_ideation_id`),
+  KEY `mentor_id_fk` (`mentor_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `mentor_id_fk` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`mentor_id`),
+  CONSTRAINT `mentor_ideation_map_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -482,7 +576,44 @@ CREATE TABLE `mentor_ideation_map` (
 
 LOCK TABLES `mentor_ideation_map` WRITE;
 /*!40000 ALTER TABLE `mentor_ideation_map` DISABLE KEYS */;
+INSERT INTO `mentor_ideation_map` VALUES (1,1,'present','lube','Ram'),(2,3,'absent','dube','Krishna'),(3,3,'present','mube','Laxman'),(4,2,'present','lube','Radha'),(5,5,'absent','dube','Sita');
 /*!40000 ALTER TABLE `mentor_ideation_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mentor_tech_stack`
+--
+
+DROP TABLE IF EXISTS `mentor_tech_stack`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mentor_tech_stack` (
+  `id` int(11) NOT NULL,
+  `mentor_id` int(11) DEFAULT NULL,
+  `tech_stack_id` int(11) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `creator_stamp` varchar(10) DEFAULT NULL,
+  `datetime` varchar(12) DEFAULT NULL,
+  `creator_user` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `status_UNIQUE` (`status`),
+  KEY `mentor_id_idx` (`mentor_id`),
+  KEY `tech_stack_id_idx` (`tech_stack_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `mentor_id` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`mentor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `mentor_tech_stack_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`),
+  CONSTRAINT `tech_stack_id` FOREIGN KEY (`tech_stack_id`) REFERENCES `tech_stack` (`tech_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mentor_tech_stack`
+--
+
+LOCK TABLES `mentor_tech_stack` WRITE;
+/*!40000 ALTER TABLE `mentor_tech_stack` DISABLE KEYS */;
+INSERT INTO `mentor_tech_stack` VALUES (1,2,1,'done','sube','2020/06/15','Krishna'),(2,3,2,'no','dube','2020/06/16','Radha'),(3,4,3,'doing','lube','2020/06/23','Sita'),(4,3,4,'working','mube','2020/05/10','Laxman'),(5,1,4,'yes','lube','2020/07/10','Ram');
+/*!40000 ALTER TABLE `mentor_tech_stack` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -500,7 +631,9 @@ CREATE TABLE `mentor_technical_stack` (
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) DEFAULT NULL,
   `datetime` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `mentor_technical_stack_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -510,6 +643,7 @@ CREATE TABLE `mentor_technical_stack` (
 
 LOCK TABLES `mentor_technical_stack` WRITE;
 /*!40000 ALTER TABLE `mentor_technical_stack` DISABLE KEYS */;
+INSERT INTO `mentor_technical_stack` VALUES (1,5,1,'no','Sube','Ram','2020/06/17'),(2,3,2,'yes','Dube','Sita','2020/06/16'),(3,2,3,'yes','Mube','Radha','2020/06/16'),(4,3,3,'no','Lube','Sita','2020/06/17'),(5,1,4,'yes','Kube','Krishna','2020/06/17');
 /*!40000 ALTER TABLE `mentor_technical_stack` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -529,7 +663,9 @@ CREATE TABLE `tech_stack` (
   `creator_stamp` varchar(10) DEFAULT NULL,
   `creator_user` varchar(10) NOT NULL,
   `tech_stackcol` varchar(45) NOT NULL,
-  PRIMARY KEY (`tech_id`)
+  PRIMARY KEY (`tech_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `tech_stack_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -539,6 +675,7 @@ CREATE TABLE `tech_stack` (
 
 LOCK TABLES `tech_stack` WRITE;
 /*!40000 ALTER TABLE `tech_stack` DISABLE KEYS */;
+INSERT INTO `tech_stack` VALUES (1,'java','dir1','frame1','done','dube','Laxman','stack1'),(2,'php','dir2','frame2','done','dube','Krishna','stack2'),(3,'python','dir3','frame3','working','mube','Ram','stack3'),(4,'Machine','dir4','frame4','doing','lube','Ram','stack4'),(5,'ruby','dir5','frame5','working','lube','Krishna','stack5');
 /*!40000 ALTER TABLE `tech_stack` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -556,7 +693,9 @@ CREATE TABLE `tech_type` (
   `creator_stamp` varchar(10) NOT NULL,
   `creator_user` varchar(10) NOT NULL,
   `tech_typecol` varchar(45) NOT NULL,
-  PRIMARY KEY (`tech_type_id`)
+  PRIMARY KEY (`tech_type_id`),
+  KEY `creator_user` (`creator_user`),
+  CONSTRAINT `tech_type_ibfk_1` FOREIGN KEY (`creator_user`) REFERENCES `user_details` (`creator_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -566,7 +705,7 @@ CREATE TABLE `tech_type` (
 
 LOCK TABLES `tech_type` WRITE;
 /*!40000 ALTER TABLE `tech_type` DISABLE KEYS */;
-INSERT INTO `tech_type` VALUES (1,'CEO','working','ceo stamp','chintu','help'),(2,'Manager','working','mgr stamp','chintu','support'),(3,'Hr','talking','hr stamp','chintu','support'),(4,'Mentor','enjoing','stamp','chintu','tect help'),(5,'Watch Man','sleeping','no stamp','chintu','security');
+INSERT INTO `tech_type` VALUES (1,'CEO','working','ceo stamp','Radha','help'),(2,'Manager','working','mgr stamp','Sita','support'),(3,'Hr','talking','hr stamp','Ram','support'),(4,'Mentor','enjoing','stamp','Ram','tect help'),(5,'Watch Man','sleeping','no stamp','Krishna','security');
 /*!40000 ALTER TABLE `tech_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -578,16 +717,15 @@ DROP TABLE IF EXISTS `user_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_details` (
-  `user_details_id` int(11) NOT NULL,
-  `email` varchar(25) NOT NULL,
+  `creator_user` varchar(15) NOT NULL,
   `first_name` varchar(15) NOT NULL,
   `last_name` varchar(15) DEFAULT NULL,
-  `password` varchar(20) NOT NULL,
+  `email` varchar(45) NOT NULL,
   `contact_number` varchar(10) NOT NULL,
-  `verified` varchar(3) NOT NULL,
-  PRIMARY KEY (`user_details_id`),
+  `password` varchar(20) DEFAULT NULL,
+  `verified` varchar(3) DEFAULT NULL,
+  PRIMARY KEY (`creator_user`),
   UNIQUE KEY `email_UNIQUE` (`email`),
-  UNIQUE KEY `password_UNIQUE` (`password`),
   UNIQUE KEY `contact_number_UNIQUE` (`contact_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -598,7 +736,7 @@ CREATE TABLE `user_details` (
 
 LOCK TABLES `user_details` WRITE;
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
-INSERT INTO `user_details` VALUES (1,'chandu@gmail.com','Chandler','Bing','chandu1','10001','1'),(2,'rachel@gmail.com','Rachel','Green','rachel2','20002','1'),(3,'joye@gmail.com','Joey ','Tribiani','joey3','30003','1'),(4,'monica@gmail.com','Monica','Geller','monica4','40004','1'),(5,'phebi@gmail.com','Phoebe','Buffay','phebi5','50005','1'),(6,'ross@gmail.com','Ross','Geller','Ross6','60006','1');
+INSERT INTO `user_details` VALUES ('Krishna','Ross','Geller','ross005@gmail.com','1000005','geller@5','yes'),('Laxman','Phoebe','Buffay','phoebe004@gmail.com','1000004','buffay@4','yes'),('Radha','Monica','Geller','monica003@gmail.com','1000003','geller@3','no'),('Ram','Chandler','Bing','chandler001@gmail.com','1000001','bing@1','no'),('Shiva','Subedar','Chaurasiya','saqsube007@gmail.com','1000007','chaurasiya@7','yes'),('Sita','Joey','Tribyani','joey002@gmail.com','1000002','tribyani@2','yes'),('Vishnu','Rachel','Green','rachel006@gmail.com','1000006','green@6','no');
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -635,4 +773,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-15 20:28:50
+-- Dump completed on 2020-06-26 15:51:16
